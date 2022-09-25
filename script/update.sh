@@ -1,4 +1,4 @@
 #!/bin/bash
 
 git pull
-sudo systemctl restart display
+sudo systemctl daemon-reload && sudo systemctl restart display
