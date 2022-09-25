@@ -35,6 +35,10 @@ sudo ln -s $(pwd)/display.service /etc/systemd/system/
 sudo systemctl daemon-reload && sudo systemctl enable display && sudo systemctl start display
 echo
 
+echo ++     Preparing scripts
+chmod +x scripts/update.sh
+echo
+
 echo '#####################################################'
 echo '# Finished. Systemctl daemon is installed and running. '
 echo '# You could increase the I2C bus baud rate. dtparam=...,i2c_arm_baudrate=400000 in /boot/config.txt has been tested successfully.'
