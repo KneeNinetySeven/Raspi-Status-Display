@@ -6,6 +6,7 @@ import board
 import busio
 import adafruit_ssd1306
 from PIL import Image, ImageDraw, ImageFont, ImageChops
+from pages.disk_page import DiskPage
 from pages.info_page import InfoPage
 from pages.load_page import LoadPage
 from loading_screen import LoadingScreen
@@ -19,6 +20,7 @@ WIDTH = 128
 HEIGHT = 64
 BORDER = 5
 
+REFRESH_RATE = .5
 MILLIS_PER_PAGE = 20000
 
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -26,8 +28,9 @@ oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c)
 
 activePages = [
     InfoPage((oled.width, oled.height)),
-    TemperaturePage((oled.width, oled.height)),
     LoadPage((oled.width, oled.height)),
+    DiskPage((oled.width, oled.height)),
+    TemperaturePage((oled.width, oled.height)),
 ]
 
 font = ImageFont.truetype("Ubuntu-Bold.ttf", size=12)

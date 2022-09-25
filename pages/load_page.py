@@ -4,6 +4,7 @@ from time import sleep
 from PIL import Image
 from pages.page import Page
 import psutil
+import display
 
 
 class LoadPage(Page):
@@ -36,4 +37,4 @@ class LoadPage(Page):
             mem_virt = psutil.virtual_memory()
             self.mem_load = mem_virt.percent
             self.mem_used = math.floor(mem_virt.used / 1024 / 1024 / 1024 * 10) / 10
-            sleep(0.25)
+            sleep(display.REFRESH_RATE)

@@ -15,10 +15,8 @@ class Page:
     def getName() -> string: 
         pass
 
-    def drawGauge(self, name, center, size, min, max, val, valueLabel=None):
+    def drawGauge(self, name, center, size, min, max, val, min_degrees=140, max_degrees=400, valueLabel=None):
         draw = ImageDraw.Draw(self.img)
-        min_degrees = 140
-        max_degrees = 400
         val_degrees = self.translate(val, min, max, min_degrees, max_degrees)
         draw.pieslice([(center[0] - size, center[1] - size),
                       (center[0] + size, center[1] + size)],
@@ -35,7 +33,7 @@ class Page:
             text = valueLabel
         textDraw.text((center[0]-(draw.textsize(text)[0] / 2), center[1] - 15),
                       text, fill='white', font=self.font_l)
-        textDraw.text((center[0]-10, center[1]+10),
+        textDraw.text((center[0]-10, center[1]+5),
                       name, fill='white', font=self.font_s)
 
         self.img = ImageChops.logical_xor(self.img, textImg)
