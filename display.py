@@ -36,7 +36,7 @@ def run():
     logging.info('Starting monitor')
     loadingScreen = LoadingScreen(oled)
     running = True
-    #sleep(10)
+    sleep(10) #To load stuff here. Just a good looking placeholder for now
     loadingScreen.dispose()
     
     cycleTime = get_current_time_millis()
