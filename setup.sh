@@ -25,4 +25,15 @@ echo
 
 
 echo ++     Installing basic python dependencies
-pip install smbus adafruit-circuitpython-ssd1306 pillow==8.2.0 numpy adafruit-blinka psutil
+sudo -H pip install smbus adafruit-circuitpython-ssd1306 pillow==8.2.0 numpy adafruit-blinka psutil
+echo
+
+echo ++     Installing system services
+sudo ln -s $(pwd)/display.service /etc/systemd/system/
+sudo systemctl daemon-reload && sudo systemctl enable display && sudo systemctl start display
+echo
+
+echo '#####################################################'
+echo '# Finished. Systemctl daemon is installed and running. '
+echo '# You could increase the I2C bus baud rate. dtparam=...,i2c_arm_baudrate=400000 in /boot/config.txt has been tested successfully.'
+echo '#####################################################'
