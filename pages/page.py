@@ -33,7 +33,7 @@ class Page:
             text = '%s%%' % val
         else:
             text = valueLabel
-        textDraw.text((center[0]-(draw.textsize(text)[0] / 2), center[1] - 10),
+        textDraw.text((center[0]-(draw.textsize(text)[0] / 2), center[1] - 15),
                       text, fill='white', font=self.font_l)
         textDraw.text((center[0]-10, center[1]+10),
                       name, fill='white', font=self.font_s)
