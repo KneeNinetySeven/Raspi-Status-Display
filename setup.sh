@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git pull https://github.com/KneeNinetySeven/Raspi-Status-Display.git
+git clone https://github.com/KneeNinetySeven/Raspi-Status-Display.git
 mv Raspi-Status-Display status-display
 cd status-display
 
