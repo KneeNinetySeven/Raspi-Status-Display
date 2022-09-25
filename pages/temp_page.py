@@ -16,7 +16,7 @@ class TemperaturePage(Page):
 
     def getImage(self) -> Image:
         self.img = Image.new("1", (self._size[0], self._size[1]))
-        self.drawLinearGauge('', [(2,2), (self.img.width, self.img.height - 20)], 20, 110, self.getCPUTemp(), 'vertical', valueLabel='%s°C' % self.getCPUTemp())
+        self.drawLinearGauge('', [(2,2), (self.img.width, self.img.height - 20)], 20, 110, self.getCPUTemp(), 'horizontal', valueLabel='%s°C' % self.getCPUTemp())
         return self.img
 
     def getName(self) -> string: 
