@@ -1,9 +1,5 @@
 #!/bin/bash
 
-git clone https://github.com/KneeNinetySeven/Raspi-Status-Display.git
-mv Raspi-Status-Display status-display
-cd status-display
-
 echo ++    I2C Checks
 if [ $(sudo raspi-config nonint get_i2c) -eq 1 ]; then
 	echo Enabling I2C
@@ -16,7 +12,13 @@ echo
 
 echo ++    Installing dependencies
 sudo apt update -y \
-&& sudo apt install python3 python3-pip i2c-tools python3-pip libopenjp2-7 -y
+&& sudo apt install git python3 python3-pip i2c-tools python3-pip libopenjp2-7 -y
+echo
+
+echo ++    Loading scripts...
+git clone https://github.com/KneeNinetySeven/Raspi-Status-Display.git
+mv Raspi-Status-Display status-display
+cd status-display
 echo
 
 echo ++    Searching for I2C devices...
