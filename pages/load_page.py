@@ -24,7 +24,7 @@ class LoadPage(Page):
                        20, 0, 100, self.cpu_load)
         self.drawGauge('MEM',
                        (self.img.width / 2 + (self.img.width / 4), self.img.height / 3),
-                       20, 0, 100, self.mem_load, valueLabel='%s MB' % self.mem_used)
+                       20, 0, 100, self.mem_load, valueLabel='%s GB' % self.mem_used)
         return self.img
 
     def getName(self):
@@ -35,5 +35,5 @@ class LoadPage(Page):
             self.cpu_load = psutil.cpu_percent(interval=1)
             mem_virt = psutil.virtual_memory()
             self.mem_load = mem_virt.percent
-            self.mem_used = math.floor(mem_virt.used / 1024 / 1024 * 10) / 10
+            self.mem_used = math.floor(mem_virt.used / 1024 / 1024 / 1024 * 10) / 10
             sleep(0.25)
