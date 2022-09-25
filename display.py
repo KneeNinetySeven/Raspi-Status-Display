@@ -1,5 +1,6 @@
 import logging
 import math
+import time
 from time import sleep
 import board
 import busio
@@ -18,7 +19,7 @@ WIDTH = 128
 HEIGHT = 64
 BORDER = 5
 
-CYCLES_PER_PAGE = 50
+MILLIS_PER_PAGE = 20000
 
 i2c = busio.I2C(board.SCL, board.SDA)
 oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c)
@@ -35,34 +36,29 @@ def run():
     logging.info('Starting monitor')
     loadingScreen = LoadingScreen(oled)
     running = True
-    sleep(10)
-
-    cycle = 0
-    pageIndex = 0
-    
+    #sleep(10)
     loadingScreen.dispose()
     
+    cycleTime = get_current_time_millis()
+    pageIndex = 0
     try:
         while running:
             currentPage = activePages[pageIndex]
 
             # Display image
             logging.debug('Loading image')
-            image = drawFooter(currentPage, pageIndex, len(
-                activePages), cycle, CYCLES_PER_PAGE, currentPage.getImage())
+            image = drawFooter(currentPage, pageIndex, len(activePages), get_current_time_millis() - cycleTime, MILLIS_PER_PAGE, currentPage.getImage())
             oled.image(image)
             oled.show()
 
             logging.debug('Hibernating...')
 
-            cycle += 1
-            if (cycle % CYCLES_PER_PAGE == 0):
-                cycle = 0
-                pageIndex = (pageIndex + 1) if (pageIndex +
-                                                1) < len(activePages) else 0
-            logging.debug('Cycle %s // NextPage: %s' %
-                          (cycle, activePages[pageIndex].getName()))
-            sleep(.1)
+            if (get_current_time_millis() - cycleTime >= MILLIS_PER_PAGE):
+                cycleTime = get_current_time_millis()
+                pageIndex = (pageIndex + 1) if (pageIndex + 1) < len(activePages) else 0
+            
+            sleep(.5)
+            logging.debug('Millis passed %s // NextPage: %s' % (get_current_time_millis() - cycleTime, activePages[pageIndex].getName()))
 
     except InterruptedError:
         logging.info('OK guys. We\'ve been interrupted!')
@@ -70,16 +66,17 @@ def run():
         running = False
         sendToSleep()
 
+def get_current_time_millis(): 
+    return round(time.time() * 1000)
 
-def drawFooter(page: Page, index, activePages, currentCycle, maxCycles, image: Image) -> Image:
+def drawFooter(page: Page, index, activePages, currentMillis, targetMillis, image: Image) -> Image:
     draw = ImageDraw.Draw(image)
     strokeWidth = 1
     footerOffset = 16
     footerTextOffsetLeft = 3
     draw.line([(0, image.height - footerOffset), (image.width,
               image.height - footerOffset)], 'white', width=strokeWidth,)
-    draw.line([(0, image.height - footerOffset), (image.width * (currentCycle /
-              maxCycles), image.height - footerOffset)], 'white', width=strokeWidth*3,)
+    draw.line([(0, image.height - footerOffset), (image.width * (currentMillis / targetMillis), image.height - footerOffset)], 'white', width=strokeWidth*3,)
     draw.line([(math.floor(image.width/2), image.height - footerOffset),
               (math.floor(image.width/2), image.height)], 'white', width=strokeWidth,)
 
