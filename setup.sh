@@ -1,5 +1,9 @@
 #!/bin/bash
 
+git pull https://github.com/KneeNinetySeven/Raspi-Status-Display.git
+mv Raspi-Status-Display status-display
+cd status-display
+
 echo ++    I2C Checks
 if [ $(sudo raspi-config nonint get_i2c) -eq 1 ]; then
 	echo Enabling I2C
