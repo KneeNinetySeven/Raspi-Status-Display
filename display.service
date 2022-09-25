@@ -1,0 +1,10 @@
+[Unit]
+Description=Status Display Service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/status-display
+ExecStart=/usr/bin/python3 /home/pi/status-display/
+
+[Install]
+WantedBy=multi-user.target
