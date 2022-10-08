@@ -33,7 +33,7 @@ class Page:
             text = valueLabel
         textDraw.text((center[0]-(draw.textsize(text)[0] / 2), center[1] - 15),
                       text, fill='white', font=self.font_l)
-        textDraw.text((center[0]-10, center[1]+5),
+        textDraw.text((center[0]-(draw.textsize(name)[0] / 2), center[1]+5),
                       name, fill='white', font=self.font_s)
 
         self.img = ImageChops.logical_xor(self.img, textImg)
