@@ -3,11 +3,14 @@ import logging.handlers
 import math
 import time
 from time import sleep
+from dateutil import parser
+from datetime import datetime
 from PIL import Image, ImageDraw, ImageFont, ImageChops
 from pages.disk_page import DiskPage
 from pages.info_page import InfoPage
 from pages.load_page import LoadPage
 from util.loading_screen import LoadingScreen
+from util.time_utils import in_between
 from pages.page import Page
 
 from pages.temp_page import TemperaturePage
@@ -33,46 +36,58 @@ font = ImageFont.truetype("Ubuntu-Bold.ttf", size=12)
 OLED = None
 
 
-def run(mocked=True):
-    IS_MOCKED = mocked
+def run(config):
+    IS_MOCKED = config["display"].getboolean("mocked", fallback=True)
     logger = logging.getLogger()
     logger.info("Starting monitor")
 
-    if not mocked:
+    if not IS_MOCKED:
         import board
         import busio
         import adafruit_ssd1306
 
         i2c = busio.I2C(board.SCL, board.SDA)
         OLED = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c)
+
+        loadingScreen = LoadingScreen(OLED)
+        sleep(3)
+        loadingScreen.dispose()
     else:
         logger.info(
             "Status display is running mocked up and will only display output.bmp"
         )
-    # loadingScreen = LoadingScreen(OLED)
-    #    loadingScreen.dispose()
+        
     running = True
 
     cycleTime = get_current_time_millis()
     pageIndex = 0
     try:
-        image = Image.new('1', (WIDTH, HEIGHT))
+        image = Image.new("1", (WIDTH, HEIGHT))
         while running:
-            currentPage = activePages[pageIndex]
+            if config["display"].getboolean('auto_off_enabled') and in_between(
+                datetime.now(),
+                parser.parse(config["display"]["auto_off"]),
+                parser.parse(config["display"]["auto_on"]),
+            ):
+                logger.info("Display is in auto off mode. Hibernating...")
+                image = getSleepingImage()
+                sleep(60)
+            else: 
+                currentPage = activePages[pageIndex]
 
-            # Display image
-            logger.debug("Loading image")
-            image = currentPage.getImage()
-            image = drawFooter(
-                currentPage,
-                pageIndex,
-                len(activePages),
-                get_current_time_millis() - cycleTime,
-                MILLIS_PER_PAGE,
-                image,
-            )
+                # Display image
+                logger.debug("Loading image")
+                image = currentPage.getImage()
+                image = drawFooter(
+                    currentPage,
+                    pageIndex,
+                    len(activePages),
+                    get_current_time_millis() - cycleTime,
+                    MILLIS_PER_PAGE,
+                    image,
+                )
 
-            if mocked:
+            if IS_MOCKED:
                 image.save("output.bmp")
             else:
                 OLED.image(image)
@@ -101,7 +116,7 @@ def run(mocked=True):
 
 
 def get_current_time_millis():
-    return round(time.time() * 1000)
+    return round(datetime.now().second * 1000)
 
 
 def drawFooter(
@@ -173,6 +188,16 @@ def drawFooter(
 def sendToSleep(self, *args):
     logging.getLogger().info("Going into sleep mode.")
 
+    img = getSleepingImage()
+    if IS_MOCKED:
+        img.save("output.bmp")
+    else:
+        OLED.image(img)
+        OLED.show()
+
+    quit()
+
+def getSleepingImage() -> Image:
     sleepImg = Image.open("img/sleep.png")
     sleepImg = sleepImg.convert("1")
     sleepImg = sleepImg.resize((64, 64))
@@ -185,10 +210,4 @@ def sendToSleep(self, *args):
             int((img.height / 2) - (sleepImg.height / 2)),
         ),
     )
-    if IS_MOCKED:
-        img.save("output.bmp")
-    else:
-        OLED.image(img)
-        OLED.show()
-
-    quit()
+    return img
