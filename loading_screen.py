@@ -1,5 +1,4 @@
 import threading
-from time import sleep
 from PIL import Image, ImageDraw
 
 ARC_LEN = 270
