@@ -33,6 +33,7 @@ activePages = [
 
 font = ImageFont.truetype("Ubuntu-Bold.ttf", size=12)
 
+OLED = None
 
 def run(mocked=True):
     IS_MOCKED = mocked
@@ -41,11 +42,11 @@ def run(mocked=True):
 
     if not mocked:
         i2c = busio.I2C(board.SCL, board.SDA)
-        oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c)
+        OLED = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c)
     else:
         logger.info(
             'Status display is running mocked up and will only display output.bmp')
-    # loadingScreen = LoadingScreen(oled)
+    # loadingScreen = LoadingScreen(OLED)
 #    loadingScreen.dispose()
     running = True
 
@@ -64,8 +65,8 @@ def run(mocked=True):
             if mocked:
                 image.save("output.bmp")
             else:
-                oled.image(image)
-                oled.show()
+                OLED.image(image)
+                OLED.show()
 
             logger.debug('Awaiting next frame...')
 
@@ -143,7 +144,7 @@ def sendToSleep(self, *args):
     if IS_MOCKED:
         img.save('output.bmp')
     else:
-        oled.image(img)
-        oled.show()
+        OLED.image(img)
+        OLED.show()
 
     quit()
