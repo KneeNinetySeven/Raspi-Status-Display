@@ -26,7 +26,10 @@ class TemperaturePage(Page):
         return math.floor(int(self.tempStr) / 100) / 10
     
     def loadTempFromSys(self): 
-        self.tempStr = open('/sys/class/thermal/thermal_zone0/temp', 'r').read().replace('\n', '')
+        try:
+            self.tempStr = open('/sys/class/thermal/thermal_zone0/temp', 'r').read().replace('\n', '')
+        except Exception:
+            self.tempStr = "0"
     
     def watchTemp(self): 
         while True: 
