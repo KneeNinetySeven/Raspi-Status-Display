@@ -5,7 +5,7 @@ git pull
 echo
 
 echo ++     Installing python dependencies
-sudo -H pip install -r requirements.txt
+sudo -H pip3 install -r requirements.txt
 echo
 
 echo ++     reload system daemons and restart display
