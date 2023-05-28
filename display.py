@@ -48,15 +48,21 @@ def run(config):
 
         i2c = busio.I2C(board.SCL, board.SDA)
         OLED = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c)
-
-        loadingScreen = LoadingScreen(OLED)
-        sleep(3)
-        loadingScreen.dispose()
     else:
         logger.info(
             "Status display is running mocked up and will only display output.bmp"
         )
-        
+    
+    loadingScreen = LoadingScreen(WIDTH, HEIGHT)
+    for _ in range(100):
+        img = loadingScreen.cycleLoading()
+        if not IS_MOCKED:
+            OLED.image(img)
+            OLED.show()
+        else: 
+            img.save("output.bmp")
+        sleep(.05)
+
     running = True
 
     cycleTime = get_current_time_millis()
@@ -69,9 +75,7 @@ def run(config):
                 parser.parse(config["display"]["auto_off"]),
                 parser.parse(config["display"]["auto_on"]),
             ):
-                logger.info("Display is in auto off mode. Hibernating...")
-                image = getSleepingImage()
-                sleep(60)
+                image = loadingScreen.cycleLoading()
             else: 
                 currentPage = activePages[pageIndex]
 
