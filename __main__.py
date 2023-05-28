@@ -11,7 +11,7 @@ CONFIG = configparser.ConfigParser()
 
 
 def main():
-    display.run(CONFIG['display'].getboolean('mocked', fallback=True))
+    display.run(CONFIG)
 
 
 if __name__ == '__main__':
@@ -28,12 +28,12 @@ if __name__ == '__main__':
     log_file = os.path.join(CONFIG['logging']['path'], 'status-display.log')
     log_handler = logging.handlers.WatchedFileHandler(log_file)
     formatter = logging.Formatter(
-        '[%(asctime)s|PID %(process)d] %(message)s',
+        '[%(asctime)s|PID %(process)d] <%(levelname)s> %(message)s',
         '%d-%m-%y %H:%M:%S')
     log_handler.setFormatter(formatter)
 
     logger.addHandler(log_handler)
-    logger.setLevel(logging.INFO)
+    logger.setLevel(CONFIG['logging'].getint('level'))
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
