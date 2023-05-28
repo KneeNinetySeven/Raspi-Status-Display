@@ -35,4 +35,4 @@ class TemperaturePage(Page):
         while True: 
             self.loadTempFromSys()
             logging.debug('Read temperature: %s' %(self.tempStr))
-            sleep(.5)
+            sleep(2.5)
