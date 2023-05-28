@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageChops
 from pages.disk_page import DiskPage
 from pages.info_page import InfoPage
 from pages.load_page import LoadPage
-from loading_screen import LoadingScreen
+from util.loading_screen import LoadingScreen
 from pages.page import Page
 
 from pages.temp_page import TemperaturePage
@@ -112,7 +112,7 @@ def drawFooter(page: Page, index, activePages, currentMillis, targetMillis, imag
 
 
 def sendToSleep(self, *args):
-    sleepImg = Image.open('sleep.png')
+    sleepImg = Image.open('img/sleep.png')
     sleepImg = sleepImg.convert('1')
     sleepImg = sleepImg.resize((64, 64))
     sleepImg = ImageChops.invert(sleepImg)
