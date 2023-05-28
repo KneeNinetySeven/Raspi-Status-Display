@@ -27,7 +27,7 @@ echo
 
 
 echo ++     Installing basic python dependencies
-sudo -H pip install smbus adafruit-circuitpython-ssd1306 pillow==8.2.0 numpy adafruit-blinka psutil
+sudo -H pip install -r requirements.txt
 echo
 
 echo ++     Installing system services
