@@ -4,7 +4,7 @@ A small utility to run on RaspberryPis and display some general purpose pages wi
 
 Suits up well, with my custom 3D printable RaspberryPi Rack Storage [here](https://www.printables.com/de/model/352578-triple-raspberrypi-rack-mount):
 
-[<img src="doc/rackmount_photo.webp" height=250 />](https://www.printables.com/de/model/352578-triple-raspberrypi-rack-mount). 
+[<img src="doc/rackmount_photo.webp" width=80% />](https://www.printables.com/de/model/352578-triple-raspberrypi-rack-mount). 
 
 
 ## Output On Display
