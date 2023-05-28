@@ -1,6 +1,5 @@
-smbus==1.1.post2
 adafruit-circuitpython-ssd1306==2.12.10
 pillow==9.5.0 
-numpy==1.19.5
+numpy==1.24.0
 adafruit-blinka==8.4.2
 psutil==5.9.2
