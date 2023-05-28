@@ -33,6 +33,7 @@ activePages = [
 
 font = ImageFont.truetype("Ubuntu-Bold.ttf", size=12)
 
+oled = None
 
 def run(mocked=True):
     IS_MOCKED = mocked
