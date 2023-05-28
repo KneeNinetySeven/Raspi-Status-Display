@@ -39,7 +39,6 @@ class DiskPage(Page):
             dsk_used = {}
             dsk_load = {}
             for partition in partitions:
-                print(partition.device)
                 dsk_virt = psutil.disk_usage(partition.mountpoint)
                 dsk_load[partition.device] = dsk_virt.percent
                 dsk_used[partition.device] = math.floor(dsk_virt.used / 1024 / 1024 / 1024 * 100) / 100
