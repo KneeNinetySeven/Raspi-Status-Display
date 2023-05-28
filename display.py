@@ -35,13 +35,13 @@ activePages = [
 
 font = ImageFont.truetype("Ubuntu-Bold.ttf", size=12)
 
+
 def run():
     logging.info('Starting monitor')
     loadingScreen = LoadingScreen(oled)
     running = True
-    sleep(10) #To load stuff here. Just a good looking placeholder for now
     loadingScreen.dispose()
-    
+
     cycleTime = get_current_time_millis()
     pageIndex = 0
     try:
@@ -50,7 +50,9 @@ def run():
 
             # Display image
             logging.debug('Loading image')
-            image = drawFooter(currentPage, pageIndex, len(activePages), get_current_time_millis() - cycleTime, MILLIS_PER_PAGE, currentPage.getImage())
+            image = currentPage.getImage()
+            image = drawFooter(currentPage, pageIndex, len(activePages), get_current_time_millis() - cycleTime, MILLIS_PER_PAGE, image)
+            
             oled.image(image)
             oled.show()
 
@@ -59,7 +61,7 @@ def run():
             if (get_current_time_millis() - cycleTime >= MILLIS_PER_PAGE):
                 cycleTime = get_current_time_millis()
                 pageIndex = (pageIndex + 1) if (pageIndex + 1) < len(activePages) else 0
-            
+
             sleep(.5)
             logging.debug('Millis passed %s // NextPage: %s' % (get_current_time_millis() - cycleTime, activePages[pageIndex].getName()))
 
