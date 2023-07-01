@@ -33,6 +33,7 @@ echo
 echo ++     Installing system services
 sudo ln -s $(pwd)/display.service /etc/systemd/system/
 sudo systemctl daemon-reload && sudo systemctl enable display && sudo systemctl start display
+touch logs/status-display.log
 echo
 
 echo '#####################################################'

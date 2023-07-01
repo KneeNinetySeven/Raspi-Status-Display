@@ -1,8 +1,7 @@
 import logging
 import logging.handlers
 import math
-import time
-from time import sleep
+from time import sleep, time
 from dateutil import parser
 from datetime import datetime
 from PIL import Image, ImageDraw, ImageFont, ImageChops
@@ -35,9 +34,10 @@ font = ImageFont.truetype("Ubuntu-Bold.ttf", size=12)
 
 OLED = None
 
-
 def run(config):
     IS_MOCKED = config["display"].getboolean("mocked", fallback=True)
+    MILLIS_PER_PAGE = config["display"].getint("page_duration_millis", fallback=20000)
+
     logger = logging.getLogger()
     logger.info("Starting monitor")
 
@@ -65,7 +65,7 @@ def run(config):
 
     running = True
 
-    cycleTime = get_current_time_millis()
+    lastCycleMillis = get_current_time_millis()
     pageIndex = 0
     try:
         image = Image.new("1", (WIDTH, HEIGHT))
@@ -86,7 +86,7 @@ def run(config):
                     currentPage,
                     pageIndex,
                     len(activePages),
-                    get_current_time_millis() - cycleTime,
+                    get_current_time_millis() - lastCycleMillis,
                     MILLIS_PER_PAGE,
                     image,
                 )
@@ -99,16 +99,16 @@ def run(config):
 
             logger.debug("Awaiting next frame...")
 
-            if get_current_time_millis() - cycleTime >= MILLIS_PER_PAGE:
+            if get_current_time_millis() - lastCycleMillis >= MILLIS_PER_PAGE:
                 logger.info(
                     "Millis passed %s // NextPage: %s"
                     % (
-                        get_current_time_millis() - cycleTime,
+                        get_current_time_millis() - lastCycleMillis,
                         activePages[pageIndex].getName(),
                     )
                 )
                 pageIndex = (pageIndex + 1) if (pageIndex + 1) < len(activePages) else 0
-                cycleTime = get_current_time_millis()
+                lastCycleMillis = get_current_time_millis()
 
             sleep(0.5)
 
@@ -120,11 +120,11 @@ def run(config):
 
 
 def get_current_time_millis():
-    return round(datetime.now().second * 1000)
+    return round(time() * 1000)
 
 
 def drawFooter(
-    page: Page, index, activePages, currentMillis, targetMillis, image: Image
+    page: Page, index, activePages, currentMicros, targetMicros, image: Image
 ) -> Image:
     draw = ImageDraw.Draw(image)
     strokeWidth = 1
@@ -138,7 +138,7 @@ def drawFooter(
     draw.line(
         [
             (0, image.height - footerOffset),
-            (image.width * (currentMillis / targetMillis), image.height - footerOffset),
+            (image.width * (currentMicros / targetMicros), image.height - footerOffset),
         ],
         "white",
         width=strokeWidth * 3,
