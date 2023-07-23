@@ -22,6 +22,9 @@ The generated output will look like this (as of 05/2023):
 `$> curl -sSL https://raw.githubusercontent.com/KneeNinetySeven/Raspi-Status-Display/main/setup.sh | bash`
 
 ## Configuration
+The `default_config.ini` should not be changed. Any changes will be overwritten by the update script. 
+For changes, please use a custom `config.ini` in the same directory. This file will overload the config in the `default_config.ini`. 
+The `default_config.ini` lists ALL available configurations. 
 
 Currently supported: SSD1306 compatible with size
 WIDTH = 128 
