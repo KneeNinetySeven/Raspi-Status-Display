@@ -14,7 +14,7 @@ CONFIG = configparser.ConfigParser()
 def main():
     # If enabled, start auto update daemon
     if CONFIG.getboolean('update', 'auto_update'):
-        updater = AutoUpdater(10000)
+        updater = AutoUpdater(CONFIG.getint('update', 'cycle_time'))
         updater.run()
 
     # Start the core display

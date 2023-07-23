@@ -4,7 +4,7 @@ systemctl is-active --quiet display
 serviceStatus=$?
 
 echo ++     Pulling changes from GitHub
-git checkout . #To avoid any git issues, no local changes should be made when using the update script.
+#git checkout . #To avoid any git issues, no local changes should be made when using the update script.
 git pull
 echo
 

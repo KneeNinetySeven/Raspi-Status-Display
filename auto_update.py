@@ -8,9 +8,9 @@ class AutoUpdater:
     _thread: Thread
     _running: bool = False
 
-    def __init__(self, wait_millis) -> None:
+    def __init__(self, wait_hours) -> None:
         self._logger = logging.getLogger()
-        self.wait_millis = wait_millis
+        self.wait_seconds = wait_hours * 60 * 60
 
     def __del__(self) -> None: 
         if not self._thread == None and self._thread.is_alive(): 
@@ -32,7 +32,7 @@ class AutoUpdater:
                 self._start_update_script()
             else:
                 self._logger.debug("No available update detected.")
-            time.sleep(self.wait_millis / 1000)
+            time.sleep(self.wait_seconds)
             
 
     def _is_update_available(self) -> bool:
