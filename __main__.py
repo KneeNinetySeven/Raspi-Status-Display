@@ -6,16 +6,24 @@ import sys
 import pathlib
 import logging
 import logging.handlers
+from auto_update import AutoUpdater
 
 CONFIG = configparser.ConfigParser()
 
 
 def main():
+    # If enabled, start auto update daemon
+    if CONFIG.getboolean('update', 'auto_update'):
+        updater = AutoUpdater(10000)
+        updater.run()
+
+    # Start the core display
     display.run(CONFIG)
 
 
 if __name__ == '__main__':
     # Parse configuration
+    CONFIG.read('default_config.ini')
     CONFIG.read('config.ini')
 
     # Setup simple logging upon start
