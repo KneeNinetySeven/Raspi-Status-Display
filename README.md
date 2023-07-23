@@ -21,6 +21,8 @@ The generated output will look like this (as of 05/2023):
 ## Installation 
 `$> curl -sSL https://raw.githubusercontent.com/KneeNinetySeven/Raspi-Status-Display/main/setup.sh | bash`
 
+## Configuration
+
 Currently supported: SSD1306 compatible with size
 WIDTH = 128 
 and
