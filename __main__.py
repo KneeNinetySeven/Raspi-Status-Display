@@ -26,7 +26,8 @@ if __name__ == '__main__':
         logger.removeHandler(handler)
 
     log_file = os.path.join(CONFIG['logging']['path'], 'status-display.log')
-    log_handler = logging.handlers.WatchedFileHandler(log_file)
+    log_handler = logging.handlers.RotatingFileHandler(log_file, mode='a', maxBytes=5*1024*1024, 
+                                 backupCount=2, encoding='UTF-8', delay=0)
     formatter = logging.Formatter(
         '[%(asctime)s|PID %(process)d] <%(levelname)s> %(message)s',
         '%d-%m-%y %H:%M:%S')
