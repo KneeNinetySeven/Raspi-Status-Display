@@ -12,7 +12,7 @@ echo
 
 echo ++    Installing dependencies
 sudo apt update -y \
-&& sudo apt install git python3 python3-pip i2c-tools python3-pip libopenjp2-7 -y
+&& sudo apt install git python3 python3-pip i2c-tools libopenjp2-7 -y
 echo
 
 echo ++    Loading scripts...
@@ -31,6 +31,8 @@ sudo -H pip3 install -r requirements.txt
 echo
 
 echo ++     Installing system services
+chmod +x script/setup.sh
+chmod +x script/update.sh
 sudo ln -s $(pwd)/display.service /etc/systemd/system/
 sudo systemctl daemon-reload && sudo systemctl enable display && sudo systemctl start display
 touch logs/status-display.log
