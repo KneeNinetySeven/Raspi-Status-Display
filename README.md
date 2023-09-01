@@ -19,7 +19,7 @@ The generated output will look like this (as of 05/2023):
 ![](doc/pages/CPU_Temp.png)
 
 ## Installation 
-`$> curl -sSL https://raw.githubusercontent.com/KneeNinetySeven/Raspi-Status-Display/main/setup.sh | bash`
+`$> curl -sSL https://raw.githubusercontent.com/KneeNinetySeven/Raspi-Status-Display/main/script/setup.sh | bash`
 
 ## Configuration
 The `default_config.ini` should not be changed. Any changes will be overwritten by the update script. 
