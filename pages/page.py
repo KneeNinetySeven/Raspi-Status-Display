@@ -9,10 +9,10 @@ class Page:
         self.font_l = ImageFont.truetype("Ubuntu-Bold.ttf", size=14)
         self.font_s = ImageFont.truetype("Ubuntu-Bold.ttf", size=8)
 
-    def getImage() -> Image: 
-        pass
+    def getImage(self) -> Image: 
+        return Image.new("1", size=self._size)
 
-    def getName() -> string: 
+    def getName(self) -> string: 
         pass
 
     def drawGauge(self, name, center, size, min, max, val, min_degrees=140, max_degrees=400, valueLabel=None):

@@ -8,7 +8,7 @@ import logging
 import logging.handlers
 from auto_update import AutoUpdater
 
-CONFIG = configparser.ConfigParser()
+CONFIG : configparser.ConfigParser = configparser.ConfigParser()
 
 
 def main():

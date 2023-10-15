@@ -1,6 +1,8 @@
 import logging
 import logging.handlers
 import math
+import json
+import util.net_util as net_util
 from time import sleep, time
 from dateutil import parser
 from datetime import datetime
@@ -8,11 +10,13 @@ from PIL import Image, ImageDraw, ImageFont, ImageChops
 from pages.disk_page import DiskPage
 from pages.info_page import InfoPage
 from pages.load_page import LoadPage
+from pages.temp_page import TemperaturePage
+from pages.qr_code_page import QRCodePage
 from util.loading_screen import LoadingScreen
 from util.time_utils import in_between
 from pages.page import Page
+from configparser import ConfigParser
 
-from pages.temp_page import TemperaturePage
 
 IS_MOCKED = True
 
@@ -34,12 +38,18 @@ font = ImageFont.truetype("Ubuntu-Bold.ttf", size=12)
 
 OLED = None
 
-def run(config):
+def run(config : ConfigParser):
     IS_MOCKED = config["display"].getboolean("mocked", fallback=True)
     MILLIS_PER_PAGE = config["display"].getint("page_duration_millis", fallback=20000)
 
     logger = logging.getLogger()
     logger.info("Starting monitor")
+    qr_code_contents = json.loads(config["pages"]["qr_codes"])
+    qr_code_labels = json.loads(config["pages"]["qr_code_names"])
+    for i in range(len(qr_code_contents)):
+        label = qr_code_labels[i] if len(qr_code_labels) > i and qr_code_labels[i] != None else "QR Code"
+        content = qr_code_contents[i]
+        activePages.insert(0, QRCodePage((WIDTH, HEIGHT), label, content))
 
     if not IS_MOCKED:
         import board
