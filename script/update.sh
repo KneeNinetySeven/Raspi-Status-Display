@@ -9,21 +9,29 @@ git pull
 echo
 
 echo ++     Installing python dependencies
-sudo -H pip3 install -r requirements.txt
+if [[ ! -d ".venv" ]]
+then
+        echo [ERR] Venv missing
+        echo Creating new venv...
+        python3 -m venv .venv
+else
+        echo [OK ] venv found.
+fi
+sudo -H source .venv/bin/activate && pip3 install -r requirements.txt
 echo
 
 echo ++     Reload system daemons
-sudo systemctl daemon-reload 
+sudo systemctl daemon-reload
 echo
 
 if [[ serviceStatus -eq 0 ]]
 then
     echo ++     System service in use. Restarting...
     sudo systemctl restart display
-    echo 
-else 
-    echo ++     System service inactive. 
-    echo 
+    echo
+else
+    echo ++     System service inactive.
+    echo
 fi
 
 echo "UPDATE FINISHED."
