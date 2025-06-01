@@ -6,7 +6,7 @@ After=network.target network-online.target
 [Service]
 Type=simple
 WorkingDirectory=/home/pi/status-display
-ExecStart=/usr/bin/python3 /home/pi/status-display/
+ExecStart=/home/pi/status-display/.venv/bin/python /home/pi/status-display
 
 [Install]
 WantedBy=multi-user.target
