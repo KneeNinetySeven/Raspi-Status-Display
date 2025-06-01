@@ -12,7 +12,7 @@ echo
 
 echo ++    Installing dependencies
 sudo apt update -y \
-&& sudo apt install git python3 python3-pip i2c-tools libopenjp2-7 -y
+&& sudo apt install git python3 python3-pip python3-venv i2c-tools libopenjp2-7 -y
 echo
 
 echo ++    Loading scripts...
