@@ -27,7 +27,7 @@ echo
 
 
 echo ++     Installing basic python dependencies
-python3 -m venv .venv
+sudo python3 -m venv .venv
 sudo -H .venv/bin/pip install -r requirements.txt
 echo
 
