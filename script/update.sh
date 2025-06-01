@@ -1,5 +1,3 @@
-#!/bin/bash
-
 systemctl is-active --quiet display
 serviceStatus=$?
 
@@ -17,7 +15,7 @@ then
 else
         echo [OK ] venv found.
 fi
-sudo -H source .venv/bin/activate && pip3 install -r requirements.txt
+sudo -H .venv/bin/pip install -r requirements.txt
 echo
 
 echo ++     Reload system daemons
